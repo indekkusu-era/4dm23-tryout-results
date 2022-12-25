@@ -151,7 +151,8 @@ class Dashboard:
         """
         st.subheader("And the Thailand Team rosters are...")
         process_df = self.get_normalized_scores()
-        res = maximize_tournament_score(process_df.values, list(weights.values()), n_players)
+        w = [weights[i] for i in process_df.columns]
+        res = maximize_tournament_score(process_df.values, w, n_players)
         rosters = get_rosters(process_df.index, res.x)
         st.markdown("\n".join([f"- {player}" for player in rosters]))
         
