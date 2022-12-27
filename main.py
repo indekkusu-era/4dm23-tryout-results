@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
 
+from gsheetsdb import connect
 from sklearn.preprocessing import StandardScaler
 from scipy.stats import t
 
@@ -11,16 +12,27 @@ from utils import maximize_tournament_score, logit, inverse_logit, weights
 n_players = 6
 n_players_team = 3
 
-df = pd.read_csv('dataset/tryout-scores.csv')
+conn = connect()
+
+@st.cache(ttl=600)
+def run_query(query):
+    rows = conn.execute(query, headers=1)
+    rows = rows.fetchall()
+    return rows
+
+sheet_url = st.secrets["public_gsheets_url"]
+rows = run_query(f'SELECT * FROM "{sheet_url}"')
+
+df = pd.DataFrame(rows)
 
 def rename_columns(df: pd.DataFrame):
     rename_cols = {
         'Timestamp': 'timestamp',
-        'Username (Ex. HowToPlayLN)': 'username',
+        '_1': 'username',
         'Map': 'beatmap',
         'Score': 'score',
         'Replay': 'replay',
-        'Screenshot of Local Ranking': 'screenshot'
+        'Screenshot_of_Local_Ranking': 'screenshot'
     }
     return df.rename(rename_cols, axis=1)
 
@@ -51,7 +63,7 @@ def get_rating(df: pd.DataFrame):
 def preprocess(df: pd.DataFrame, rating=False):
     df = rename_columns(df)
     df = rename_players(df)
-    df = clean_score_columns(df)
+    # df = clean_score_columns(df)
     table_df = pivot_max_score(df)
     table_df = impute_raw_scores(table_df)
     if rating:
