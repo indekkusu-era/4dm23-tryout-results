@@ -32,8 +32,6 @@ df = pd.DataFrame(rows)
 df = df.dropna(how='any')
 # df = df[df['verified']]
 
-st.dataframe(df)
-
 def rename_columns(df: pd.DataFrame):
     rename_cols = {
         'Timestamp': 'timestamp',
