@@ -9,6 +9,11 @@ from scipy.stats import t
 
 from utils import maximize_tournament_score, logit, inverse_logit, weights
 
+st.set_page_config(
+    page_title='4dm2023 Thailand Team Tryout Results', 
+    page_icon='https://cdn.discordapp.com/attachments/546525809440194560/1010576476158038147/4dm23.jpg'
+)
+
 n_players = 6
 n_players_team = 3
 
@@ -170,10 +175,6 @@ class Dashboard:
         
     
     def render(self):
-        st.set_page_config(
-            page_title='4dm2023 Thailand Team Tryout Results', 
-            page_icon='https://cdn.discordapp.com/attachments/546525809440194560/1010576476158038147/4dm23.jpg'
-        )
         st.title("4dm2023 Thailand Team Tryout Results")
         self._toggle_logit = st.checkbox('Toggle Logit mode')
         self.score_distribution(self._toggle_logit)
