@@ -29,6 +29,10 @@ sheet_url = st.secrets["public_gsheets_url"]
 rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
 df = pd.DataFrame(rows)
+df = df.dropna(how='any')
+# df = df[df['verified']]
+
+st.dataframe(df)
 
 def rename_columns(df: pd.DataFrame):
     rename_cols = {
