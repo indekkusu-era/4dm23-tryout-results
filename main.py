@@ -30,7 +30,7 @@ rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
 df = pd.DataFrame(rows)
 df = df.dropna(how='any')
-# df = df[df['verified']]
+df = df[df['verified']]
 
 def rename_columns(df: pd.DataFrame):
     rename_cols = {
